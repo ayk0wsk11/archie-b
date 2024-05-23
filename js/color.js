@@ -5,10 +5,23 @@ class Color {
     this.blue = blue;
   }
 
-  getStringAverageColorHex() {
+  getColorHex() {
     const r = Math.round(this.red).toString(16).padStart(2, "0");
     const g = Math.round(this.green).toString(16).padStart(2, "0");
     const b = Math.round(this.blue).toString(16).padStart(2, "0");
+    return `#${r}${g}${b}`;
+  }
+
+  getOppositeColorHex() {
+    const r = Math.round(255 - this.red)
+      .toString(16)
+      .padStart(2, "0");
+    const g = Math.round(255 - this.green)
+      .toString(16)
+      .padStart(2, "0");
+    const b = Math.round(255 - this.blue)
+      .toString(16)
+      .padStart(2, "0");
     return `#${r}${g}${b}`;
   }
 }

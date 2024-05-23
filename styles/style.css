@@ -72,13 +72,13 @@ body {
 }
 
 #ar {
-  color: red;
+  color: rgb(255, 0, 0);
 }
 
 #chie {
-  color: green;
+  color: rgb(0, 255, 0);
 }
 
 #b {
-  color: blue;
+  color: rgb(0, 0, 255);
 }

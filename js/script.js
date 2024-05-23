@@ -6,6 +6,10 @@ window.onload = function () {
     "ArrowUp",
     "ArrowRight",
     "ArrowDown",
+    "KeyA",
+    "KeyW",
+    "KeyD",
+    "KeyS",
   ];
 
   function startGame() {
@@ -14,11 +18,8 @@ window.onload = function () {
     game.start();
   }
 
-  function restartGame() {
-    location.reload();
-  }
-
   function handleKeydown(event) {
+    console.log(event.code);
     const key = event.code;
     if (!game) startGame();
     else if (game.gameIsOver && key === "Space") startGame();
@@ -26,15 +27,19 @@ window.onload = function () {
       event.preventDefault();
       switch (key) {
         case "ArrowLeft":
+        case "KeyA":
           game.player.directionX = -2;
           break;
         case "ArrowUp":
+        case "KeyW":
           game.player.directionY = -2;
           break;
         case "ArrowRight":
+        case "KeyD":
           game.player.directionX = 2;
           break;
         case "ArrowDown":
+        case "KeyS":
           game.player.directionY = 2;
           break;
       }
@@ -49,10 +54,14 @@ window.onload = function () {
       switch (key) {
         case "ArrowLeft":
         case "ArrowRight":
+        case "KeyA":
+        case "KeyD":
           game.player.directionX = 0;
           break;
         case "ArrowUp":
         case "ArrowDown":
+        case "KeyW":
+        case "KeyS":
           game.player.directionY = 0;
           break;
       }

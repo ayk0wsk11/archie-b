@@ -1,7 +1,6 @@
 const DISPLAY_SIZE = 700;
 const PLAYER_SIZE = 30;
 const PARTICLE_SIZE = 10;
-
 const POINTS_PER_SCORE = 125;
 const COLLECTED_PARTICLE_SIZE = 2 * PARTICLE_SIZE;
 const COLLECTED_PARTICLE_MARGIN = 3;
@@ -10,6 +9,9 @@ const COLOR_CONTAINER_SIZE =
   COLOR_CONTAINER_DIM *
   (COLLECTED_PARTICLE_SIZE + 2 * COLLECTED_PARTICLE_MARGIN);
 const FPS = 60;
+const T_RANDOMIZE = 500; // in ms
+const P_RADNOMIZE = 0.1;
+const GEN_FREQUENCY = 6;
 
 class Game {
   constructor() {
@@ -35,81 +37,82 @@ class Game {
     this.color = new AverageColor(0, 0, 0, 0);
     this.gameIsOver = false;
     this.gameIntervalId;
-    this.gameLoopFrequency = Math.round(1000 / FPS); // 60fps
+    this.randomizeIntervallId;
+    this.generateIntervalId;
   }
 
   start() {
-    // Set the height and width of the game screen
+    // Set the height and width of the game display
     this.gameDisplay.style.height = `${this.displaySize}px`;
     this.gameDisplay.style.width = `${this.displaySize}px`;
-
     // Hide the start screen and show the game screen
     this.startScreen.style.display = "none";
     this.gameScreen.style.display = "flex";
     this.gameEndScreen.style.display = "none";
-
     // Executes the gameLoop on a fequency of 60 times per second. Also stores the ID of the interval.
     this.gameIntervalId = setInterval(() => {
       this.gameLoop();
-    }, this.gameLoopFrequency);
+    }, Math.round(1000 / FPS));
+    // Randomize directions of particles
+    this.randomizeIntervalId = setInterval(() => {
+      this.particles.forEach((p) => p.randomizeDirection(P_RADNOMIZE));
+    }, T_RANDOMIZE);
+    // Create a new particle based on a GEN_FREQUENCY
+    this.generateIntervalId = setInterval(() => {
+      this.particles.push(
+        new Particle(this.gameDisplay, this.displaySize, this.particleSize)
+      );
+    }, Math.round(1000 / GEN_FREQUENCY));
   }
 
   gameLoop() {
-    //console.log("gameLoop(): playing");
     this.update();
-    if (this.gameIsOver) clearInterval(this.gameIntervalId);
+    if (this.gameIsOver) {
+      clearInterval(this.gameIntervalId);
+      clearInterval(this.randomizeIntervalId);
+      clearInterval(this.generateIntervalId);
+    }
   }
 
   update() {
     this.player.move();
-
-    this.particles.forEach((particle, id) => {
+    for (let id = 0; id < this.particles.length; id++) {
+      const particle = this.particles[id];
       particle.move();
-      /* If the player collides with an particle. Remove the particle element from the DOM. Remove particle object from the array. Game is */
+      /* If the player collides with an particle. 
+         Remove the particle element from the DOM. 
+         Remove particle object from the array. 
+         If deadly particle: Game Over! */
       if (this.player.didCollide(particle)) {
-        if (particle.isDeadly) this.endGame();
-        else {
+        if (particle.isDeadly) {
+          this.endGame();
+          return;
+        } else {
           this.score++;
-          const rgb = particle.element.style.backgroundColor.match(/\d+/g);
           this.collectedColors.push(particle.element.style.backgroundColor);
+          const rgb = particle.element.style.backgroundColor.match(/\d+/g);
           this.color.addColor(Number(rgb[0]), Number(rgb[1]), Number(rgb[2]));
           particle.element.remove();
           this.particles.splice(id, 1);
           id--;
         }
-      } // If the particle is off the screen (at the bottom)
-      else if (particle.top > this.displaySize) {
+      } // If the particle is off the screen remove it
+      else if (this.isParticleOffTheDisplay(particle)) {
         particle.element.remove();
         this.particles.splice(id, 1);
         id--;
       }
-    });
-
-    if (this.gameIsOver) return;
-
-    if (this.score) {
-      document.getElementById("avg-color").innerText =
-        this.color.getStringAverageColorHex();
-      document.getElementById("avg-color").style.color =
-        this.color.getStringAverageColorHex();
-      document.getElementById("score").innerText = (
-        this.score * POINTS_PER_SCORE
-      )
-        .toString()
-        .padStart(7, "0");
-      this.player.element.style.border = null;
-      this.player.element.style.background =
-        this.color.getStringAverageColorHex();
-      this.addCollectedColorToContainer();
     }
 
-    // Create a new particle based on a random probability
-    // when there is no other particles on the screen
-    if (Math.random() > 0.97) {
-      this.particles.push(
-        new Particle(this.gameDisplay, this.displaySize, this.particleSize)
-      );
-    }
+    if (!this.score) return;
+
+    document.getElementById("avg-color").innerText = this.color.getColorHex();
+    document.getElementById("avg-color").style.color = this.color.getColorHex();
+    document.getElementById("score").innerText = (this.score * POINTS_PER_SCORE)
+      .toString()
+      .padStart(7, "0");
+    this.player.element.style.background = this.color.getColorHex();
+    this.addCollectedColorToContainer();
   }
 
   addCollectedColorToContainer() {
@@ -125,6 +128,17 @@ class Game {
     }
   }
 
+  isParticleOffTheDisplay(particle) {
+    if (
+      particle.top > this.displaySize + 3 * PARTICLE_SIZE ||
+      particle.top < -3 * PARTICLE_SIZE ||
+      particle.left > this.displaySize + 3 * PARTICLE_SIZE ||
+      particle.left < -3 * PARTICLE_SIZE
+    )
+      return true;
+    return false;
+  }
+
   endGame() {
     this.gameIsOver = true;
     this.player.element.remove();
@@ -133,9 +147,7 @@ class Game {
     this.gameEndScreen.style.display = "block";
     document.getElementById("avg-color").innerText = "#000000";
     document.getElementById("avg-color").style.color = "white";
-    document.getElementById("score").innerText = "0"
-      .toString()
-      .padStart(7, "0");
+    document.getElementById("score").innerText = "0".padStart(7, "0");
     while (this.colorContainer.firstChild) {
       this.colorContainer.removeChild(this.colorContainer.lastChild);
     }

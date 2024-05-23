@@ -9,7 +9,7 @@ class Player {
     this.directionY = 0;
     this.element = document.createElement("div");
     this.element.style.backgroundColor = "black";
-    this.element.style.border = "2px solid grey";
+    this.element.style.border = "6px double white";
     this.element.style.position = "absolute";
     this.element.style.width = `${this.playerSize}px`;
     this.element.style.height = `${this.playerSize}px`;
@@ -22,15 +22,13 @@ class Player {
     // Update player's position based on directionX and directionY
     this.left += this.directionX;
     this.top += this.directionY;
-
     // Ensure the player stays within the game screen
-    if (this.left < 10) this.left = 10;
-    if (this.top < 10) this.top = 10;
-    if (this.left > this.displaySize - this.playerSize - 10)
-      this.left = this.displaySize - this.playerSize - 10;
-    if (this.top > this.displaySize - this.playerSize - 10)
-      this.top = this.displaySize - this.playerSize - 10;
-
+    if (this.left < 5) this.left = 5;
+    if (this.top < 5) this.top = 5;
+    if (this.left > this.displaySize - this.playerSize - 5)
+      this.left = this.displaySize - this.playerSize - 5;
+    if (this.top > this.displaySize - this.playerSize - 5)
+      this.top = this.displaySize - this.playerSize - 5;
     // Update the player's position on the screen
     this.updatePosition();
   }
@@ -47,7 +45,6 @@ class Player {
   }
 
   updatePosition() {
-    // Update player's position based on the properties left and top
     this.element.style.left = `${this.left}px`;
     this.element.style.top = `${this.top}px`;
   }

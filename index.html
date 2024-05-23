@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="icon" type="image/x-icon" href="images/link8bit.png" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Press Start 2P"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles/style.css" />
+    <title>archie b</title>
+  </head>
+  <body>
+    <main>
+      <!-- #game-intro is initially shown on the game start screen -->
+      <div id="game-intro">
+        <div id="game-intro-text">
+          <h1>
+            <span id="ar">ar</span><span id="chie">chie</span>
+            <span id="b">b</span>
+          </h1>
+          <h2>the colorcollector</h2>
+          <br />
+          <br />
+          <p>here comes the story ...</p>
+          <br />
+          <p>– press any key to start –</p>
+        </div>
+      </div>
+
+      <div id="game-screen">
+        <div id="game-info">
+          <h2>
+            <span id="ar">ar</span><span id="chie">chie</span>
+            <span id="b">b</span>
+          </h2>
+          <p>color: <span id="avg-color">#000000</span></p>
+          <p>score: <span id="score">0000000</span></p>
+          <div id="color-container"></div>
+        </div>
+        <!-- #game-screen is initially hidden using CSS style display: none -->
+        <div id="game-display"></div>
+        <div></div>
+      </div>
+
+      <!-- #game-end is initially hidden using CSS style display: none -->
+      <div id="game-end">
+        <h1>Game Over</h1>
+        <br />
+        <p>– press space key to restart –</p>
+      </div>
+    </main>
+
+    <script type="text/javascript" src="js/color.js"></script>
+    <script type="text/javascript" src="js/particle.js"></script>
+    <script type="text/javascript" src="js/player.js"></script>
+    <script type="text/javascript" src="js/game.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+  </body>
+</html>

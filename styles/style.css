@@ -2,7 +2,7 @@ body {
   padding: 0;
   text-align: center;
   font-family: "Press Start 2P";
-  font-size: 22px;
+  font-size: 20px;
   color: white;
   background-image: url("../images/background.jpg");
   background-size: 200px;
@@ -18,13 +18,13 @@ body {
 #game-intro-text {
   background-color: rgba(0, 0, 0, 0.5);
   border: 5px double grey;
-  width: 50vw;
-  height: 90vh;
+  width: 60vw;
+  padding: 40px;
 }
 
 #game-screen {
   display: none;
-  justify-content: space-around;
+  justify-content: center;
   width: 100vw;
   padding: 20px 0px;
 }
@@ -53,6 +53,21 @@ body {
   background-color: black;
   border: 5px double gray;
   animation: slide 5s linear infinite;
+  margin-left: 20px;
+}
+
+#game-end {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 0px;
+}
+
+#game-end-text {
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 5px double grey;
+  width: 60vw;
+  padding: 40px;
 }
 
 @keyframes slide {
@@ -65,10 +80,6 @@ body {
   100% {
     background-position: 0 50px;
   }
-}
-
-#game-end {
-  display: none;
 }
 
 #ar {

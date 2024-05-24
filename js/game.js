@@ -21,6 +21,16 @@ class Game {
     this.gameInfo = document.getElementById("game-info");
     this.gameEndScreen = document.getElementById("game-end");
     this.colorContainer = document.getElementById("color-container");
+    this.musicMain = new Audio("../sounds/archie_b_main.mp3");
+    this.musicMain.volume = 0.3;
+    this.musicMain.loop = true;
+    this.musicGameOver = new Audio("../sounds/archie_b_gameover.mp3");
+    this.musicGameOver.volume = 0.3;
+    this.musicGameOver.loop = true;
+    this.soundCollected = new Audio("../sounds/collected.wav");
+    this.soundCollected.volume = 0.09;
+    this.soundDied = new Audio("../sounds/died.wav");
+    this.soundDied.volume = 0.03;
     this.colorContainer.style.width = `${COLOR_CONTAINER_SIZE}px`;
     this.colorContainer.style.height = `${COLOR_CONTAINER_SIZE}px`;
     this.displaySize = DISPLAY_SIZE;
@@ -37,8 +47,21 @@ class Game {
     this.color = new AverageColor(0, 0, 0, 0);
     this.gameIsOver = false;
     this.gameIntervalId;
-    this.randomizeIntervallId;
+    this.randomizeIntervalId;
     this.generateIntervalId;
+  }
+
+  destructor() {
+    this.musicMain.pause();
+    this.musicGameOver.pause();
+    this.player.element.remove();
+    this.particles.forEach((particle) => particle.element.remove());
+    document.getElementById("avg-color").innerText = "#ffffff";
+    document.getElementById("avg-color").style.color = "white";
+    document.getElementById("score").innerText = "0".padStart(7, "0");
+    while (this.colorContainer.firstChild) {
+      this.colorContainer.removeChild(this.colorContainer.lastChild);
+    }
   }
 
   start() {
@@ -49,6 +72,8 @@ class Game {
     this.startScreen.style.display = "none";
     this.gameScreen.style.display = "flex";
     this.gameEndScreen.style.display = "none";
+    // start playimg main theme
+    this.musicMain.play();
     // Executes the gameLoop on a fequency of 60 times per second. Also stores the ID of the interval.
     this.gameIntervalId = setInterval(() => {
       this.gameLoop();
@@ -85,9 +110,11 @@ class Game {
          If deadly particle: Game Over! */
       if (this.player.didCollide(particle)) {
         if (particle.isDeadly) {
+          this.soundDied.play();
           this.endGame();
           return;
         } else {
+          this.soundCollected.play();
           this.score++;
           this.collectedColors.push(particle.element.style.backgroundColor);
           const rgb = particle.element.style.backgroundColor.match(/\d+/g);
@@ -111,7 +138,7 @@ class Game {
     document.getElementById("score").innerText = (this.score * POINTS_PER_SCORE)
       .toString()
       .padStart(7, "0");
-    this.player.element.style.background = this.color.getColorHex();
+    this.player.element.style.borderColor = this.color.getColorHex();
     this.addCollectedColorToContainer();
   }
 
@@ -141,15 +168,18 @@ class Game {
 
   endGame() {
     this.gameIsOver = true;
-    this.player.element.remove();
-    this.particles.forEach((particle) => particle.element.remove());
+    this.musicMain.pause();
+    this.musicGameOver.play();
     this.gameScreen.style.display = "none";
-    this.gameEndScreen.style.display = "block";
-    document.getElementById("avg-color").innerText = "#000000";
-    document.getElementById("avg-color").style.color = "white";
-    document.getElementById("score").innerText = "0".padStart(7, "0");
-    while (this.colorContainer.firstChild) {
-      this.colorContainer.removeChild(this.colorContainer.lastChild);
+    this.gameEndScreen.style.display = "flex";
+    if (this.score) {
+      document.getElementById("avg-color-end").innerText =
+        this.color.getColorHex();
+      document.getElementById("avg-color-end").style.color =
+        this.color.getColorHex();
+      document.getElementById("score-end").innerText = (
+        this.score * POINTS_PER_SCORE
+      ).toString();
     }
   }
 }

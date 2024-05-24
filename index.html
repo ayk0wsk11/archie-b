@@ -17,14 +17,32 @@
       <!-- #game-intro is initially shown on the game start screen -->
       <div id="game-intro">
         <div id="game-intro-text">
+          <h4>the coloreater</h4>
           <h1>
             <span id="ar">ar</span><span id="chie">chie</span>
             <span id="b">b</span>
           </h1>
-          <h2>the colorcollector</h2>
           <br />
-          <br />
-          <p>here comes the story ...</p>
+          <p>
+            <span id="ar">ar</span><span id="chie">chie</span>
+            <span id="b">b</span> lives in a world that couldn't be darker. one
+            day, little lights appeared from beyond the horizon. it brought
+            color to a world that knew nothing but darkness. harming the lights
+            is strictly forbidden, they are considered deities...
+          </p>
+          <p>
+            <span id="ar">ar</span><span id="chie">chie</span>
+            <span id="b">b</span> doesn't care. he himself wants to become a
+            deity. he wants to be <span id="ar">ar</span
+            ><span id="chie">chie</span> <span id="b">b</span> the colorful. he
+            wants to devour them all. but he has to stay away from the
+            guardians. if they catch him, it's over for him...
+          </p>
+          <p>
+            control <span id="ar">ar</span><span id="chie">chie</span>
+            <span id="b">b</span> with the WASD or arrow keys and fulfill his
+            dream... devour them all...
+          </p>
           <br />
           <p>– press any key to start –</p>
         </div>
@@ -32,12 +50,16 @@
 
       <div id="game-screen">
         <div id="game-info">
+          <h5>the coloreater</h5>
           <h2>
             <span id="ar">ar</span><span id="chie">chie</span>
             <span id="b">b</span>
           </h2>
-          <p>color: <span id="avg-color">#000000</span></p>
+          <br />
+          <hr />
+          <p>color: <span id="avg-color">#ffffff</span></p>
           <p>score: <span id="score">0000000</span></p>
+          <br />
           <div id="color-container"></div>
         </div>
         <!-- #game-screen is initially hidden using CSS style display: none -->
@@ -47,9 +69,18 @@
 
       <!-- #game-end is initially hidden using CSS style display: none -->
       <div id="game-end">
-        <h1>Game Over</h1>
-        <br />
-        <p>– press space key to restart –</p>
+        <div id="game-end-text">
+          <h1>game over</h1>
+          <br />
+          <h3>
+            <span id="ar">ar</span><span id="chie">chie</span>
+            <span id="b">b</span> the
+            <span id="avg-color-end">#ffffff</span> with
+            <span id="score-end">0</span>xp
+          </h3>
+          <br />
+          <p>– press space key to restart –</p>
+        </div>
       </div>
     </main>
 

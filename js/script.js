@@ -13,13 +13,12 @@ window.onload = function () {
   ];
 
   function startGame() {
-    console.log("start game");
+    if (game) game.destructor();
     game = new Game();
     game.start();
   }
 
   function handleKeydown(event) {
-    console.log(event.code);
     const key = event.code;
     if (!game) startGame();
     else if (game.gameIsOver && key === "Space") startGame();
@@ -48,7 +47,6 @@ window.onload = function () {
 
   function handleKeyup(event) {
     const key = event.code;
-    //console.log("handleKeyup(): ", key);
     if (possibleKeystrokes.includes(key)) {
       event.preventDefault();
       switch (key) {
